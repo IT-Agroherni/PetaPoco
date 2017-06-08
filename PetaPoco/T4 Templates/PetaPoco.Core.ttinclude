@@ -1017,10 +1017,14 @@ class PostGreSqlSchemaReader : SchemaReader
 			return result;
 		}
 	}
-
+	
 	string GetPK(string table){
 		
-		string sql=@"SELECT kcu.column_name 
+		string sql=@"SELECT col.column_name
+			FROM INFORMATION_SCHEMA.columns col
+			WHERE  table_name = @tablename and column_name = 'AghId'
+			UNION
+			SELECT kcu.column_name 
 			FROM information_schema.key_column_usage kcu
 			JOIN information_schema.table_constraints tc
 			ON kcu.constraint_name=tc.constraint_name
