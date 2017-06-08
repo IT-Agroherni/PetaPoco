@@ -29,12 +29,12 @@ namespace PetaPoco.Core.Inflection
         public static IInflector Instance
         {
             get { return _inflector; }
-            set { _inflector = value ?? new EnglishInflector(); }
+            set { _inflector = value ?? new SpanishInflector(); }
         }
 
         static Inflector()
         {
-            _inflector = new EnglishInflector();
+            _inflector = new SpanishInflector();
         }
     }
 }

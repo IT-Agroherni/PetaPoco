@@ -25,7 +25,7 @@
 	tables["tablename"]["columnname"].PropertyName="newname";	// To change the property name of a column
 	tables["tablename"]["columnname"].PropertyType="bool";		// To change the property type of a column
 */
-
+	//var manager = TemplateFileManager.Create(this);
 	// Generate output
 	if (tables.Count>0)
 	{

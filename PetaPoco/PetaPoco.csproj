@@ -55,6 +55,7 @@
     <Compile Include="Core\ConventionMapper.cs" />
     <Compile Include="Core\GridReader.cs" />
     <Compile Include="Core\IGridReader.cs" />
+    <Compile Include="Core\Inflection\SpanishInflector.cs" />
     <Compile Include="Core\Inflection\Inflector.cs" />
     <Compile Include="Core\IProvider.cs" />
     <Compile Include="Core\ITransaction.cs" />
@@ -112,6 +113,7 @@
   <ItemGroup>
     <None Include="PetaPoco.ruleset" />
     <None Include="T4 Templates\PetaPoco.Core.ttinclude" />
+    <None Include="T4 Templates\PetaPoco.AGHGenerator.ttinclude" />
     <None Include="T4 Templates\PetaPoco.Generator.ttinclude" />
     <None Include="T4 Templates\Database.tt">
       <LastGenOutput>Database.cs</LastGenOutput>
