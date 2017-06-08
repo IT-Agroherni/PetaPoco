@@ -1,10 +1,10 @@
 <#@ include file="PetaPoco.Core.ttinclude" #>
 <#
 	// Settings
-    ConnectionStringName = "";			// Uses last connection string in config if not specified
-    Namespace = "";
-    RepoName = "";
-    GenerateOperations = true;
+	ConnectionStringName = "";			// Uses last connection string in config if not specified
+	Namespace = "";
+	RepoName = "";
+	GenerateOperations = true;
 	GeneratePocos = true;
 	GenerateCommon = true;
 	ClassPrefix = "";
@@ -13,7 +13,7 @@
 	ExplicitColumns = true;
 	ExcludePrefix = new string[] {}; // Exclude tables by prefix.
 
-    // Read schema
+	// Read schema
 	var tables = LoadTables();
 
 
