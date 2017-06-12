@@ -8,40 +8,40 @@ namespace PetaPoco.Cs.Joiner
 {
 	public class Program
 	{
-	    private static int Main(string[] args)
-	    {
-	        if (args == null || args.Length != 1)
-	        {
-	            Console.WriteLine("Invalid argument. A signle argument is required, which must be the PetaPoco directory.");
-	            return 9;
-	        }
+		private static int Main(string[] args)
+		{
+			if (args == null || args.Length != 1)
+			{
+				Console.WriteLine("Invalid argument. A signle argument is required, which must be the PetaPoco directory.");
+				return 9;
+			}
 
-	        var filePath = Path.GetFullPath(args[0]);
-	        var databaseFilePath = Path.Combine(filePath, "Database.cs");
+			var filePath = Path.GetFullPath(args[0]);
+			var databaseFilePath = Path.Combine(filePath, "Database.cs");
 
-	        if (!File.Exists(databaseFilePath))
-	        {
-                Console.WriteLine($"PetaPoco not found at `${databaseFilePath}`.");
-                return 9;
-            }
+			if (!File.Exists(databaseFilePath))
+			{
+				Console.WriteLine($"PetaPoco not found at `${databaseFilePath}`.");
+				return 9;
+			}
 
-	        var files = Directory.GetFiles(filePath, "*.cs", SearchOption.AllDirectories)
-                .Where(f => f.IndexOf("AssemblyInfo.cs", StringComparison.OrdinalIgnoreCase) < 0)
-                .ToArray();
+			var files = Directory.GetFiles(filePath, "*.cs", SearchOption.AllDirectories)
+				.Where(f => f.IndexOf("AssemblyInfo.cs", StringComparison.OrdinalIgnoreCase) < 0)
+				.ToArray();
 
-	        var parsedFiles = files
-	            .Select(f => CsFile.Parse(File.ReadAllText(f)))
-	            .ToList();
+			var parsedFiles = files
+				.Select(f => CsFile.Parse(File.ReadAllText(f)))
+				.ToList();
 
-            var builder = new StringBuilder();
+			var builder = new StringBuilder();
 
-	        builder.Append(@"// <copyright file=""ColumnAttribute.cs"" company=""PetaPoco - CollaboratingPlatypus"">
+			builder.Append(@"// <copyright file=""ColumnAttribute.cs"" company=""PetaPoco - CollaboratingPlatypus"">
 //      Apache License, Version 2.0 https://github.com/CollaboratingPlatypus/PetaPoco/blob/master/LICENSE.txt
 // </copyright>
 // <author>PetaPoco - CollaboratingPlatypus</author>
 // <date>")
-	            .Append(DateTime.Now.ToString("yyyy/MM/dd"))
-	            .AppendLine(@"</date>
+				.Append(DateTime.Now.ToString("yyyy/MM/dd"))
+				.AppendLine(@"</date>
 
 // --------------------------WARNING--------------------------------
 // -----------------------------------------------------------------
@@ -54,48 +54,48 @@ namespace PetaPoco.Cs.Joiner
 
 ");
 
-            var usings = parsedFiles
-	            .SelectMany(pf => pf.Usings)
-	            .Where(u => u.IndexOf("PetaPoco", StringComparison.OrdinalIgnoreCase) < 0)
-	            .Distinct(StringComparer.Ordinal)
-	            .OrderBy(s => s)
-	            .ToList();
+			var usings = parsedFiles
+				.SelectMany(pf => pf.Usings)
+				.Where(u => u.IndexOf("PetaPoco", StringComparison.OrdinalIgnoreCase) < 0)
+				.Distinct(StringComparer.Ordinal)
+				.OrderBy(s => s)
+				.ToList();
 
-            usings.ForEach(u => builder.AppendLine(u));
+			usings.ForEach(u => builder.AppendLine(u));
 
-	        builder.AppendLine(@"
+			builder.AppendLine(@"
 namespace PetaPoco
 {
 #pragma warning disable 1066,1570,1573,1591");
 
-            parsedFiles.ForEach(p => builder.AppendLine(p.CodeBlock));
-            builder.Append(@"#pragma warning restore 1066,1570,1573,1591
+			parsedFiles.ForEach(p => builder.AppendLine(p.CodeBlock));
+			builder.Append(@"#pragma warning restore 1066,1570,1573,1591
 }");
 
-            File.WriteAllText(Path.Combine(filePath, "..\\", "Output", "PetaPoco.cs"), builder.ToString());
+			File.WriteAllText(Path.Combine(filePath, "..\\", "Output", "PetaPoco.cs"), builder.ToString());
 
-	        return 0;
-	    }
+			return 0;
+		}
 
-        public class CsFile
-        {
-            private static Regex _usingsRegex = new Regex("using\\s.+?;", RegexOptions.CultureInvariant| RegexOptions.Compiled);
+		public class CsFile
+		{
+			private static Regex _usingsRegex = new Regex("using\\s.+?;", RegexOptions.CultureInvariant| RegexOptions.Compiled);
 
-            private static Regex _codeBlockRegex = new Regex("(?<=namespace\\s.+?{).+?(?=}\\s*$)", RegexOptions.Singleline | RegexOptions.CultureInvariant| RegexOptions.Compiled);
+			private static Regex _codeBlockRegex = new Regex("(?<=namespace\\s.+?{).+?(?=}\\s*$)", RegexOptions.Singleline | RegexOptions.CultureInvariant| RegexOptions.Compiled);
 
-            public string[] Usings { get; private set; }
+			public string[] Usings { get; private set; }
 
-            public string CodeBlock { get; private set; }
+			public string CodeBlock { get; private set; }
 
-            public static CsFile Parse(string fileContents)
-            {
-                return new CsFile
-                {
-                    Usings = _usingsRegex.Matches(fileContents)
-                        .Cast<Match>().Select(m => m.Value).ToArray(),
-                    CodeBlock = _codeBlockRegex.Match(fileContents).Value
-                };
-            }
-        }
+			public static CsFile Parse(string fileContents)
+			{
+				return new CsFile
+				{
+					Usings = _usingsRegex.Matches(fileContents)
+						.Cast<Match>().Select(m => m.Value).ToArray(),
+					CodeBlock = _codeBlockRegex.Match(fileContents).Value
+				};
+			}
+		}
 	}
 }

@@ -2,10 +2,10 @@
 <#@ include file="TemplateFilemanager.CS.ttinclude" #>
 <#
 	// Settings
-    ConnectionStringName = "mssql";			// Uses last connection string in config if not specified
-    Namespace = "AGCheckIn.Models.VERSAS";
-    RepoName = "";
-    GenerateOperations = true;
+	ConnectionStringName = "";			// Uses last connection string in config if not specified
+	Namespace = "";
+	RepoName = "";
+	GenerateOperations = true;
 	GeneratePocos = true;
 	GeneratePartialPocos = true;
 	GeneratePartialPocosDir = "Models";
@@ -16,7 +16,7 @@
 	ExplicitColumns = true;
 	ExcludePrefix = new string[] {}; // Exclude tables by prefix.
 
-    // Read schema
+	// Read schema
 	var tables = LoadTables();
 
 

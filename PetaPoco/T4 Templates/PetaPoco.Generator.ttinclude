@@ -35,8 +35,8 @@ namespace <#=Namespace #>
 		}
 		
 		public static IFactory Factory { get; set; }
-        public static <#=RepoName#> GetInstance()
-        {
+		public static <#=RepoName#> GetInstance()
+		{
 			if (_instance!=null)
 				return _instance;
 				
@@ -44,7 +44,7 @@ namespace <#=Namespace #>
 				return Factory.GetInstance();
 			else
 				return new <#=RepoName#>();
-        }
+		}
 
 		[ThreadStatic] static <#=RepoName#> _instance;
 		
@@ -59,7 +59,7 @@ namespace <#=Namespace #>
 			if (_instance==this)
 				_instance=null;
 		}
-        
+		
 <# if (GenerateOperations) { #>
 		public class Record<T> where T:new()
 		{
@@ -137,7 +137,7 @@ namespace <#=Namespace #>
 foreach(Table tbl in from t in tables where !t.Ignore select t)
 {
 #>
-    
+	
 <# if (string.IsNullOrEmpty(tbl.Schema)) { #>
 	[TableName("<#=tbl.Name#>")]
 <# } else { #>
@@ -156,8 +156,8 @@ foreach(Table tbl in from t in tables where !t.Ignore select t)
 <# if (ExplicitColumns) { #>
 	[ExplicitColumns]
 <# } #>
-    public partial class <#=tbl.ClassName#> <# if (GenerateOperations) { #>: <#=RepoName#>.Record<<#=tbl.ClassName#>> <# } #> 
-    {
+	public partial class <#=tbl.ClassName#> <# if (GenerateOperations) { #>: <#=RepoName#>.Record<<#=tbl.ClassName#>> <# } #> 
+	{
 <#
 foreach(Column col in from c in tbl.Columns where !c.Ignore select c)
 {
@@ -165,10 +165,10 @@ foreach(Column col in from c in tbl.Columns where !c.Ignore select c)
 #>
 <# if (TrackModifiedColumns) { #>
 <# if (col.Name!=col.PropertyName) { #>
-        [Column("<#=col.Name#>")] 
+		[Column("<#=col.Name#>")] 
 <# } else { #>
 <# if (ExplicitColumns) { #>
-        [Column] 
+		[Column] 
 <# } #>
 <# } #>
 		public <#=col.PropertyType #><#=CheckNullable(col)#> <#=col.PropertyName #> 
