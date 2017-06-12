@@ -18,10 +18,10 @@ namespace PetaPoco.Core.Inflection
         /// </summary>
         /// <param name="value">
         ///     The inflector to set as the default instance, or null to restore the default
-        ///     <see cref="EnglishInflector" />.
+        ///     <see cref="SpanishInflector" />.
         /// </param>
         /// <remarks>
-        ///     By default the <see cref="EnglishInflector" /> instance used.
+        ///     By default the <see cref="SpanishInflector" /> instance used.
         /// </remarks>
         /// <returns>
         ///     The currently set <see cref="IInflector" /> instance.

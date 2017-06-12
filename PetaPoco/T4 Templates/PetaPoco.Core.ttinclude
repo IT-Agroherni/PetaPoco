@@ -95,6 +95,8 @@ bool IncludeViews = false;
 bool GenerateOperations = false;
 bool GenerateCommon = true;
 bool GeneratePocos = true;
+bool GeneratePartialPocos = true;
+string GeneratePartialPocosDir = "";
 bool ExplicitColumns = true;
 bool TrackModifiedColumns = false;
 string[] ExcludePrefix = new string[] {};
@@ -723,7 +725,7 @@ class SqlServerSchemaReader : SchemaReader
 
 	const string TABLE_SQL=@"SELECT *
 		FROM  INFORMATION_SCHEMA.TABLES
-		WHERE TABLE_TYPE='BASE TABLE' OR TABLE_TYPE='VIEW'
+		WHERE (TABLE_TYPE='BASE TABLE' OR TABLE_TYPE='VIEW') AND (LEFT(TABLE_NAME,1) <> '_')
 		ORDER BY TABLE_SCHEMA,TABLE_TYPE,TABLE_NAME";
 
 	const string COLUMN_SQL=@"SELECT 

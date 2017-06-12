@@ -1,15 +1,18 @@
 <#@ include file="PetaPoco.Core.ttinclude" #>
+<#@ include file="TemplateFilemanager.CS.ttinclude" #>
 <#
 	// Settings
-    ConnectionStringName = "";			// Uses last connection string in config if not specified
-    Namespace = "";
+    ConnectionStringName = "mssql";			// Uses last connection string in config if not specified
+    Namespace = "AGCheckIn.Models.VERSAS";
     RepoName = "";
     GenerateOperations = true;
 	GeneratePocos = true;
+	GeneratePartialPocos = true;
+	GeneratePartialPocosDir = "Models";
 	GenerateCommon = true;
 	ClassPrefix = "";
 	ClassSuffix = "";
-	TrackModifiedColumns = false;
+	TrackModifiedColumns = true;
 	ExplicitColumns = true;
 	ExcludePrefix = new string[] {}; // Exclude tables by prefix.
 
@@ -25,10 +28,10 @@
 	tables["tablename"]["columnname"].PropertyName="newname";	// To change the property name of a column
 	tables["tablename"]["columnname"].PropertyType="bool";		// To change the property type of a column
 */
-	//var manager = TemplateFileManager.Create(this);
 	// Generate output
 	if (tables.Count>0)
 	{
 #>
 <#@ include file="PetaPoco.Generator.ttinclude" #>
+<#@ include file="PetaPoco.AGHGenerator.ttinclude" #>
 <# } #>

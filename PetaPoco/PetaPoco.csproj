@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PetaPoco.ruleset" />
+    <None Include="T4 Templates\TemplateFilemanager.CS.ttinclude" />
     <None Include="T4 Templates\PetaPoco.Core.ttinclude" />
     <None Include="T4 Templates\PetaPoco.AGHGenerator.ttinclude" />
     <None Include="T4 Templates\PetaPoco.Generator.ttinclude" />
