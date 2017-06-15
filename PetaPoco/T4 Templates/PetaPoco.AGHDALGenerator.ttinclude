@@ -1,0 +1,28 @@
+<#
+if (GeneratePartialDAL && !string.IsNullOrEmpty(GeneratePartialDALDir) && !string.IsNullOrEmpty(GeneratePartialDALProject)) { 
+foreach(Table tbl in from t in tables where !t.Ignore select t)
+{
+
+manager.StartNewFile(tbl.ClassName+".cs",GeneratePartialDALProject,GeneratePartialDALDir);
+string inhernitanceDAL = string.IsNullOrEmpty(GeneratePartialDALProjectInheritance) ? "" : " : " + GeneratePartialDALProjectInheritance + "<" + tbl.ClassName + ">";
+#>
+using System;
+using PetaPoco;
+using AGH.Core.Entities.Versas;
+using Autofac;
+
+namespace <#= GeneratePartialDALProject + "." + GeneratePartialDALDir  #>
+{
+	public class <#= tbl.ClassName + "DAL" + inhernitanceDAL #> 
+    {
+		public <#= tbl.ClassName + "DAL" #>(ILifetimeScope scope) : base(scope)
+        {
+        }
+	}
+}
+
+<#
+manager.EndBlock();
+}
+}
+#>

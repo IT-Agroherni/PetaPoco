@@ -50,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ColumnAttribute.cs" />
+    <Compile Include="Attributes\GridAttribute.cs" />
+    <Compile Include="Attributes\MaxItemsToRetrieveAttribute.cs" />
+    <Compile Include="Attributes\ComboAttribute.cs" />
     <Compile Include="Core\AnsiString.cs" />
     <Compile Include="Core\ColumnInfo.cs" />
     <Compile Include="Core\ConventionMapper.cs" />
@@ -112,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PetaPoco.ruleset" />
+    <None Include="T4 Templates\PetaPoco.AGHDALGenerator.ttinclude" />
     <None Include="T4 Templates\TemplateFilemanager.CS.ttinclude" />
     <None Include="T4 Templates\PetaPoco.Core.ttinclude" />
     <None Include="T4 Templates\PetaPoco.AGHGenerator.ttinclude" />

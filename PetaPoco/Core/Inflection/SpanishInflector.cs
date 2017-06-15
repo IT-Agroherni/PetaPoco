@@ -98,7 +98,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The pluralised word.</returns>
         public string Pluralise(string word)
         {
-            return ApplyRules(Plurals, word);
+            return word;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The signularised word.</returns>
         public string Singularise(string word)
         {
-            return ApplyRules(Singulars, word);
+            return word;
         }
 
         /// <summary>
@@ -129,8 +129,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The titleised word.</returns>
         public string Titleise(string word)
         {
-            return Regex.Replace(Humanise(Underscore(word)), @"\b([a-z])",
-                match => match.Captures[0].Value.ToUpper());
+            return word;
         }
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The humanized word.</returns>
         public string Humanise(string lowercaseAndUnderscoredWord)
         {
-            return Capitalise(Regex.Replace(lowercaseAndUnderscoredWord, @"_", " "));
+            return lowercaseAndUnderscoredWord;
         }
 
         /// <summary>
@@ -162,8 +161,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The pascalied word.</returns>
         public string Pascalise(string lowercaseAndUnderscoredWord)
         {
-            return Regex.Replace(lowercaseAndUnderscoredWord, "(?:^|_)(.)",
-                match => match.Groups[1].Value.ToUpper());
+            return lowercaseAndUnderscoredWord;
         }
 
         /// <summary>
@@ -179,7 +177,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The camelised word.</returns>
         public string Camelise(string lowercaseAndUnderscoredWord)
         {
-            return Uncapitalise(Pascalise(lowercaseAndUnderscoredWord));
+            return lowercaseAndUnderscoredWord;
         }
 
         /// <summary>
@@ -195,10 +193,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The underscored word.</returns>
         public string Underscore(string pascalCasedWord)
         {
-            return Regex.Replace(
-                Regex.Replace(
-                    Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])",
-                    "$1_$2"), @"[-\s]", "_").ToLower();
+            return pascalCasedWord;
         }
 
         /// <summary>
@@ -215,7 +210,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The capitalised word.</returns>
         public string Capitalise(string word)
         {
-            return word.Substring(0, 1).ToUpper() + word.Substring(1).ToLower();
+            return word;
         }
 
         /// <summary>
@@ -232,7 +227,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The uncapitalised word.</returns>
         public string Uncapitalise(string word)
         {
-            return word.Substring(0, 1).ToLower() + word.Substring(1);
+            return word;
         }
 
         /// <summary>
@@ -252,7 +247,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The ordinalised number.</returns>
         public string Ordinalise(string number)
         {
-            return Ordanise(int.Parse(number), number);
+            return number;
         }
 
         /// <summary>
@@ -272,7 +267,7 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The ordinalised number.</returns>
         public string Ordinalise(int number)
         {
-            return Ordanise(number, number.ToString());
+            return number.ToString();
         }
 
         /// <summary>
@@ -288,68 +283,51 @@ namespace PetaPoco.Core.Inflection
         /// <returns>The dasherised word.</returns>
         public string Dasherise(string underscoredWord)
         {
-            return underscoredWord.Replace('_', '-');
+            return underscoredWord;
         }
 
         private static void AddIrregular(string singular, string plural)
         {
-            AddPlural("(" + singular[0] + ")" + singular.Substring(1) + "$", "$1" + plural.Substring(1));
-            AddSingular("(" + plural[0] + ")" + plural.Substring(1) + "$", "$1" + singular.Substring(1));
+            //    AddPlural("(" + singular[0] + ")" + singular.Substring(1) + "$", "$1" + plural.Substring(1));
+            //    AddSingular("(" + plural[0] + ")" + plural.Substring(1) + "$", "$1" + singular.Substring(1));
         }
 
         private static void AddUncountable(string word)
         {
-            Uncountables.Add(word.ToLower());
+            //Uncountables.Add(word.ToLower());
         }
 
         private static void AddPlural(string rule, string replacement)
         {
-            Plurals.Add(new Rule(rule, replacement));
+            //Plurals.Add(new Rule(rule, replacement));
         }
 
         private static void AddSingular(string rule, string replacement)
         {
-            Singulars.Add(new Rule(rule, replacement));
+            //Singulars.Add(new Rule(rule, replacement));
         }
 
         private static string ApplyRules(IList<Rule> rules, string word)
         {
             var result = word;
 
-            if (Uncountables.Contains(word.ToLower()))
-                return result;
+            //if (Uncountables.Contains(word.ToLower()))
+            //    return result;
 
-            for (var i = rules.Count - 1; i >= 0; i--)
-            {
-                if ((result = rules[i].Apply(word)) != null)
-                {
-                    break;
-                }
-            }
+            //for (var i = rules.Count - 1; i >= 0; i--)
+            //{
+            //    if ((result = rules[i].Apply(word)) != null)
+            //    {
+            //        break;
+            //    }
+            //}
 
             return result;
         }
 
         private static string Ordanise(int number, string numberString)
         {
-            var nMod100 = number%100;
-
-            if (nMod100 >= 11 && nMod100 <= 13)
-            {
-                return numberString + "th";
-            }
-
-            switch (number%10)
-            {
-                case 1:
-                    return numberString + "st";
-                case 2:
-                    return numberString + "nd";
-                case 3:
-                    return numberString + "rd";
-                default:
-                    return numberString + "th";
-            }
+            return numberString;
         }
 
         private class Rule
@@ -366,7 +344,7 @@ namespace PetaPoco.Core.Inflection
 
             public string Apply(string word)
             {
-                return !_regex.IsMatch(word) ? null : _regex.Replace(word, _replacement);
+                return word;
             }
         }
     }

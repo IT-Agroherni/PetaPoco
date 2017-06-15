@@ -1,9 +1,7 @@
 <#
 if (GeneratePartialPocos) { 
-var manager = TemplateFileManager.Create(this);
 foreach(Table tbl in from t in tables where !t.Ignore select t)
 {
-
 manager.StartNewFile(tbl.ClassName+".cs","",GeneratePartialPocosDir);
 #>
 using System;
@@ -11,7 +9,7 @@ using PetaPoco;
 
 namespace <#=Namespace #>
 {
-	public partial class <#=tbl.ClassName#>
+	public partial class <#=tbl.ClassName#>: IBaseEntity
     {
 	}
 }
@@ -19,6 +17,5 @@ namespace <#=Namespace #>
 <#
 manager.EndBlock();
 }
-manager.Process();
 }
 #>

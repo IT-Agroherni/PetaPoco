@@ -8,7 +8,11 @@
 	GenerateOperations = true;
 	GeneratePocos = true;
 	GeneratePartialPocos = true;
-	GeneratePartialPocosDir = "Models";
+	GeneratePartialPocosDir = "";
+	GeneratePartialDAL = true;
+	GeneratePartialDALDir = "";
+	GeneratePartialDALProject = "";
+	GeneratePartialDALProjectInheritance = "";
 	GenerateCommon = true;
 	ClassPrefix = "";
 	ClassSuffix = "";
@@ -18,7 +22,7 @@
 
 	// Read schema
 	var tables = LoadTables();
-
+    var manager = TemplateFileManager.Create(this);
 
 /*
 	// Tweak Schema
@@ -34,4 +38,6 @@
 #>
 <#@ include file="PetaPoco.Generator.ttinclude" #>
 <#@ include file="PetaPoco.AGHGenerator.ttinclude" #>
-<# } #>
+<#@ include file="PetaPoco.AGHDALGenerator.ttinclude" #>
+<# manager.Process();
+} #>
