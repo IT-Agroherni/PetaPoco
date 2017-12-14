@@ -31,14 +31,20 @@ namespace PetaPoco
         public string[] Columns{ get; set; }
 
         /// <summary>
+        /// When filling a combo, a multipoco loading is implemented a must be done
+        /// </summary>
+        public bool DoMultiPocoLoading { get; set; }
+
+        /// <summary>
         ///     Constructs a new instance of the <seealso cref="PrimaryKeyAttribute" />.
         /// </summary>
         /// <param name="ids">The name of the ids' column.</param>
         /// <param name="columns">The name of the combos' column.</param>
-        public ComboAttribute(string[] ids, string[] columns)
+        public ComboAttribute(string[] ids, string[] columns, bool doMultiPocoLoading = false)
         {
             Ids = ids;
             Columns = columns;
+            DoMultiPocoLoading = doMultiPocoLoading;
         }
     }
 }

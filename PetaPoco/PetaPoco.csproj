@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ColumnAttribute.cs" />
+    <Compile Include="Attributes\InsertConfigurationAttribute.cs" />
     <Compile Include="Attributes\OrderByAttribute.cs" />
     <Compile Include="Attributes\SearchableAttribute.cs" />
     <Compile Include="Attributes\RelationshipsToFill3Attribute.cs" />
