@@ -164,12 +164,15 @@ foreach(Column col in from c in tbl.Columns where !c.Ignore select c)
 		// Column bindings
 #>
 <# if (TrackModifiedColumns) { #>
+<# if (col.IsOldPK || col.IsPK) { #>
+		[ResultColumn] 
+<# }  else { #>
 <# if (col.Name!=col.PropertyName) { #>
 		[Column("<#=col.Name#>")] 
 <# } else { #>
 <# if (ExplicitColumns) { #>
 		[Column] 
-<# } #>
+<# }} #>
 <# } #>
 		public <#=col.PropertyType #><#=CheckNullable(col)#> <#=col.PropertyName #> 
 		{ 

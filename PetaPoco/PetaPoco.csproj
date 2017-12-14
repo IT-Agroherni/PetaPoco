@@ -50,6 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ColumnAttribute.cs" />
+    <Compile Include="Attributes\OrderByAttribute.cs" />
+    <Compile Include="Attributes\SearchableAttribute.cs" />
+    <Compile Include="Attributes\RelationshipsToFill3Attribute.cs" />
+    <Compile Include="Attributes\RelationshipsToFill4Attribute.cs" />
+    <Compile Include="Attributes\RelationshipsToFill5Attribute.cs" />
+    <Compile Include="Attributes\RelationshipsToFill6Attribute.cs" />
+    <Compile Include="Attributes\RelationshipsToFill7Attribute.cs" />
+    <Compile Include="Attributes\RelationshipsToFill8Attribute.cs" />
+    <Compile Include="Attributes\RelationshipsToFill2Attribute.cs" />
+    <Compile Include="Attributes\RelationshipsToFill1Attribute.cs" />
     <Compile Include="Attributes\GridAttribute.cs" />
     <Compile Include="Attributes\MaxItemsToRetrieveAttribute.cs" />
     <Compile Include="Attributes\ComboAttribute.cs" />

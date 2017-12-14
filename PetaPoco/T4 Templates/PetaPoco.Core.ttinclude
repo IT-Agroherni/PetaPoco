@@ -146,6 +146,7 @@ public class Column
     public string PropertyName;
     public string PropertyType;
     public bool IsPK;
+    public bool IsOldPK;
     public bool IsNullable;
 	public bool IsAutoIncrement;
 	public bool Ignore;
@@ -582,10 +583,16 @@ class SqlServerSchemaReader : SchemaReader
 		            
 			// Mark the primary key
 			string PrimaryKey=GetPK(tbl.Name);
+            string OldPrimaryKey=GetPKOld(tbl.Name);
 			var pkColumn=tbl.Columns.SingleOrDefault(x=>x.Name.ToLower().Trim()==PrimaryKey.ToLower().Trim());
 			if(pkColumn!=null)
 			{
-				pkColumn.IsPK=true;
+				pkColumn.IsPK=true;                
+			}
+            var oldpkColumn=tbl.Columns.SingleOrDefault(x=>x.Name.ToLower().Trim()==OldPrimaryKey.ToLower().Trim());
+            if(oldpkColumn!=null)
+			{
+				oldpkColumn.IsOldPK=true;
 			}
 		}
 	    
@@ -625,9 +632,18 @@ class SqlServerSchemaReader : SchemaReader
 					col.PropertyName=CleanUp(col.Name);
 					col.PropertyType=GetPropertyType(rdr["DataType"].ToString());
 					col.IsNullable=rdr["IsNullable"].ToString()=="YES";
-					col.IsAutoIncrement=((int)rdr["IsIdentity"])==1 || 
+                    
+                    if (col.Name.Equals("AghId"))
+                    {
+                        col.IsAutoIncrement=true;
+                    }
+                    else
+                    {
+                        col.IsAutoIncrement=((int)rdr["IsIdentity"])==1 || 
 							(!DBNull.Value.Equals(rdr["DefaultSetting"]) && ((string)rdr["DefaultSetting"] == "(newsequentialid())" ||
 							(string)rdr["DefaultSetting"] == "(newid())"));
+                    }
+					
 					result.Add(col);
 				}
 			}
@@ -637,6 +653,38 @@ class SqlServerSchemaReader : SchemaReader
 	}
 
 	string GetPK(string table){
+		
+		string sql=@"SELECT TOP 1 * FROM (SELECT col.column_name
+			FROM INFORMATION_SCHEMA.columns col
+			WHERE  table_name = @tableName and column_name = 'AghId'
+			UNION
+			SELECT kcu.column_name 
+			FROM information_schema.key_column_usage kcu
+			JOIN information_schema.table_constraints tc
+			ON kcu.constraint_name=tc.constraint_name
+			WHERE lower(tc.constraint_type)='primary key'
+			AND kcu.table_name=@tableName) keyTable";
+
+		using (var cmd=_factory.CreateCommand())
+		{
+			cmd.Connection=_connection;
+			cmd.CommandText=sql;
+
+			var p = cmd.CreateParameter();
+			p.ParameterName = "@tableName";
+			p.Value=table;
+			cmd.Parameters.Add(p);
+
+			var result=cmd.ExecuteScalar();
+
+			if(result!=null)
+				return result.ToString();    
+		}	         
+		
+		return "";
+	}
+
+    string GetPKOld(string table){
 		
 		string sql=@"SELECT c.name AS ColumnName
                 FROM sys.indexes AS i 
