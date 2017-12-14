@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using PetaPoco.Core;
 using PetaPoco.Internal;
 using PetaPoco.Utilities;
+using PetaPoco.Attributes;
 
 namespace PetaPoco
 {
@@ -1313,16 +1314,22 @@ namespace PetaPoco
                         }
 
                         string outputClause = String.Empty;
+                        string scopeClause = String.Empty;
                         if (autoIncrement)
                         {
-                            outputClause = _provider.GetInsertOutputClause(primaryKeyName);
+                            var insertAttrs = poco.GetType().GetCustomAttributes(true).OfType<InsertConfigurationAttribute>().FirstOrDefault();
+                            if (insertAttrs != null && insertAttrs.UseScope)
+                                scopeClause = "select SCOPE_IDENTITY() AghId";
+                            else
+                                outputClause = _provider.GetInsertOutputClause(primaryKeyName);
                         }
 
-                        cmd.CommandText = string.Format("INSERT INTO {0} ({1}){2} VALUES ({3})",
+                        cmd.CommandText = string.Format("INSERT INTO {0} ({1}){2} VALUES ({3}); {4}",
                             _provider.EscapeTableName(tableName),
                             string.Join(",", names.ToArray()),
                             outputClause,
-                            string.Join(",", values.ToArray())
+                            string.Join(",", values.ToArray()),
+                            scopeClause
                             );
 
                         if (!autoIncrement)
